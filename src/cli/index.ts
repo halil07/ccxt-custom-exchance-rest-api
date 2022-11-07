@@ -9,7 +9,7 @@ exchanges.forEach(async (exchange, index)=>{
     const writeStream = fs.createWriteStream(path.resolve(__dirname, `./types/${exchange}.d.ts`));
     const exchangeInstance = new ccxt[exchange]();
     const restApi = await defineRestApi(exchangeInstance.api, "request", []);
-    writeStream.write(`import {${exchange} as Type} from 'ccxt';\ndeclare class ${exchange}RestApiType extends Type {\n\t${Object.keys(restApi).map(method => `${method}: (params:{}, context?:{}) => Promise<any>;`).join('\n\t')}\n}`);
+    writeStream.write(`import {${exchange} as Type} from 'ccxt';\nexport class ${exchange}RestApiType extends Type {\n\t${Object.keys(restApi).map(method => `${method}: (params:{}, context?:{}) => Promise<any>;`).join('\n\t')}\n}`);
     writeStream.end();
     console.log("exchange", exchange, index+1, ccxt.exchanges.length, Object.keys(restApi).length)
 })
