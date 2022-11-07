@@ -1,0 +1,16 @@
+{
+  "name": "ccxt-with-type",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "tsup src/cli/index.ts --onSuccess \"node dist/index.js\""
+  },
+  "dependencies": {
+    "ccxt": "^2.1.33"
+  },
+  "devDependencies": {
+    "tsup": "^6.4.0"
+  }
+}
