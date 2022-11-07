@@ -1,12 +1,9 @@
 const capitalize = (s) => s.length ? (s.charAt (0).toUpperCase () + s.slice (1)) : s;
-const apis = [];
-export const defineRestApi = (instance, api:any=null, methodName = "request", paths = []) => {
-    if(!api){
-        api = instance.api;
-    }
+
+export const defineRestApi = async (api:any=null, methodName = "request", paths = [], apis= []) => {
     const keys = Object.keys (api)
-    for (let i = 0; i < keys.length; i++) {
-        const key = keys[i]
+    for (const key of keys) {
+        let i = keys.indexOf(key);
         const value = api[key]
         const uppercaseMethod = key.toUpperCase ()
         const lowercaseMethod = key.toLowerCase ()
@@ -14,24 +11,25 @@ export const defineRestApi = (instance, api:any=null, methodName = "request", pa
         if (Array.isArray (value)) {
             for (let k = 0; k < value.length; k++) {
                 const path = value[k].trim ()
-                const a = defineRestApiEndpoint (instance, methodName, uppercaseMethod, lowercaseMethod, camelcaseMethod, path, paths)
+                const a = defineRestApiEndpoint (methodName, uppercaseMethod, lowercaseMethod, camelcaseMethod, path, paths)
                 // @ts-ignore
                 apis.push(a);
             }
-        // the options HTTP method conflicts with the 'options' API url path
-        // } else if (key.match (/^(?:get|post|put|delete|options|head|patch)$/i)) {
-        } else if (key.match (/^(?:get|post|put|delete|head|patch)$/i)) {
+            // the options HTTP method conflicts with the 'options' API url path
+            // } else if (key.match (/^(?:get|post|put|delete|options|head|patch)$/i)) {
+        }
+        else if (key.match (/^(?:get|post|put|delete|head|patch)$/i)) {
             const endpoints = Object.keys (value);
             for (let j = 0; j < endpoints.length; j++) {
                 const endpoint = endpoints[j]
                 const path = endpoint.trim ()
                 const config = value[endpoint]
                 if (typeof config === 'object') {
-                    const a = defineRestApiEndpoint (instance, methodName, uppercaseMethod, lowercaseMethod, camelcaseMethod, path, paths, config)
+                    const a = defineRestApiEndpoint (methodName, uppercaseMethod, lowercaseMethod, camelcaseMethod, path, paths, config)
                     // @ts-ignore
                     apis.push(a);
                 } else if (typeof config === 'number') {
-                    const a = defineRestApiEndpoint (instance, methodName, uppercaseMethod, lowercaseMethod, camelcaseMethod, path, paths, { cost: config })
+                    const a = defineRestApiEndpoint (methodName, uppercaseMethod, lowercaseMethod, camelcaseMethod, path, paths, { cost: config })
                     // @ts-ignore
                     apis.push(a);
                 } else {
@@ -40,22 +38,17 @@ export const defineRestApi = (instance, api:any=null, methodName = "request", pa
             }
         } else {
             // @ts-ignore
-            defineRestApi (instance, value, methodName, paths.concat ([ key ]))
+            await defineRestApi (value, methodName, paths.concat ([ key ]), apis)
         }
     }
     // @ts-ignore
-    return apis.reduce((prev, curr) => ({...prev, ...curr}),{});
+    return apis.reduce((prev, curr) => ({...prev, ...curr}), {});
 }
-export const defineRestApiEndpoint = (instance, methodName, uppercaseMethod, lowercaseMethod, camelcaseMethod, path, paths, config = {}) => {
+
+export const defineRestApiEndpoint = (methodName, uppercaseMethod, lowercaseMethod, camelcaseMethod, path, paths, config = {}) => {
     const splitPath = path.split (/[^a-zA-Z0-9]/)
     const camelcaseSuffix  = splitPath.map (capitalize).join ('');
     const camelcasePrefix = [ paths[0] ].concat (paths.slice (1).map (capitalize)).join ('');
     const camelcase  = camelcasePrefix + camelcaseMethod + capitalize (camelcaseSuffix);
-    const typeArgument = (paths.length > 1) ? paths : paths[0];
-    // handle call costs here
-    const options = {};
-    const partial = async (params = {}, context = {}) => instance[methodName](path, typeArgument, uppercaseMethod, params, undefined, undefined, config, context)
-    // const partial = async (params) => this[methodName] (path, typeArgument, uppercaseMethod, params || {})
-    options[camelcase]  = partial;
-    return options;
+    return {[camelcase]: null};
 }
