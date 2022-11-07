@@ -7,7 +7,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup src/cli/index.ts --onSuccess \"node dist/index.cjs\"",
-    "postbuild": "rm -rf dist/index.cjs && mv dist/import.js dist/index.js"
+    "postbuild": "rm -rf dist/index.cjs dist/index.js && mv src/index.ts dist/index.ts"
   },
   "dependencies": {
     "ccxt": "^2.1.33"
