@@ -1,6 +1,6 @@
 {
   "name": "ccxt-with-rest-api-type",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MIT",
   "type": "module",
   "module": "dist/index.js",
