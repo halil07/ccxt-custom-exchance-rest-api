@@ -1,13 +1,13 @@
 {
   "name": "ccxt-with-rest-api-type",
-  "version": "0.0.3",
-  "main": "index.js",
+  "version": "0.0.5",
   "license": "MIT",
   "type": "module",
-  "files": ["dist/types"],
+  "module": "dist/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsup src/cli/index.ts --onSuccess \"node dist/index.cjs\"",
-    "postbuild": "rm -rf dist/index.cjs"
+    "postbuild": "rm -rf dist/index.cjs && mv dist/import.js dist/index.js"
   },
   "dependencies": {
     "ccxt": "^2.1.33"
