@@ -1,7 +1,7 @@
 ### Ccxt With Rest Api Type
 ````shell
 npm install --save-dev ccxt-with-rest-api-type
-yarn add -D ccxt
+yarn add -D ccxt-with-rest-api-type
 ````
 
 ```typescript
