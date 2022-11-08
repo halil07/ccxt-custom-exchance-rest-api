@@ -5,7 +5,7 @@ yarn add -D ccxt
 ````
 
 ```typescript
-import {binanceRestApiType} from './dist/index';
+import {binanceRestApiType} from 'ccxt-with-rest-api-type';
 import ccxt from "ccxt";
 
 const binance = <binanceRestApiType>new ccxt.binance();
