@@ -1,4 +1,4 @@
-### Ccxt With Rest Api Type
+### Ccxt With Rest Api Type for NODEJS
 ````shell
 npm install --save-dev ccxt-with-rest-api-type
 yarn add -D ccxt-with-rest-api-type
@@ -20,12 +20,14 @@ Javascript
 ```javascript
 import ccxt from "ccxt";
 /**
- * @type {import('ccxt-with-rest-api-type').binanceRestApiType}
+ * @type {import('ccxt-with-rest-api-type').wooRestApiType}
  */
-const binance = new ccxt.binance();
+const woo = new ccxt.woo();
 
 (async () => {
-    const ExchangeInfo = await binance.fapiPublicGetExchangeInfo();
+    const ExchangeInfo = await woo.v1PublicGetFuturesSymbol({
+        symbol: 'PERP_BTC_USDT'
+    });
     console.log(ExchangeInfo)
 })()
 ```
