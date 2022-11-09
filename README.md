@@ -25,7 +25,7 @@ import ccxt from "ccxt";
 const binance = new ccxt.binance();
 
 (async () => {
-    const ExchangeInfo = await binance.v1PublicGetFutures();
+    const ExchangeInfo = await binance.fapiPublicGetExchangeInfo();
     console.log(ExchangeInfo)
 })()
 ```
