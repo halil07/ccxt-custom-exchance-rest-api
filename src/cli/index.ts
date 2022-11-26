@@ -5,6 +5,7 @@ import path from "node:path";
 const exchanges = ccxt.exchanges
 fs.rmSync(path.join(__dirname, "./types"), { recursive: true, force: true });
 fs.mkdirSync(path.join(__dirname, "./types"));
+
 (async () => {
     const writeIndexStream = fs.createWriteStream(path.resolve(__dirname, `../src/index.ts`));
     exchanges.forEach(async (exchange, index)=>{
